@@ -1,6 +1,6 @@
 import { useState, useEffect, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { getQuestionResults, getQuestionResultsByRole, simulateQuestionResults, ROLES } from '../data/sampleData';
+import { getQuestionResults, getQuestionResultsByRole, simulateQuestionResults, ROLES } from '../data/dataService';
 import { surveyQuestions } from '../data/survey';
 import { mbtiQuestions, getAxisColors } from '../data/mbtiQuestions';
 import NightSky from '../components/NightSky';

@@ -1,6 +1,6 @@
 import { useState, useEffect, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { getSurveyResults, addRandomSurveyResult } from '../data/sampleData';
+import { getSurveyResults, addRandomSurveyResult } from '../data/dataService';
 import { surveyQuestions } from '../data/survey';
 import NightSky from '../components/NightSky';
 

@@ -1,11 +1,8 @@
 import { useState, useEffect, useMemo, useRef, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { getResults, addResult, mbtiDescriptions, mbtiResults, computeTop3FromType } from '../data/mbti';
+import { mbtiDescriptions, mbtiResults, computeTop3FromType } from '../data/mbti';
+import { getResults, simulateOne, ALL_TYPES } from '../data/dataService';
 import NightSky from '../components/NightSky';
-
-const ALL_TYPES = Object.keys(mbtiDescriptions);
-let _simIdx = 0;
-const simulateOne = () => { addResult(ALL_TYPES[_simIdx % ALL_TYPES.length]); _simIdx++; };
 
 
 /* ── Physics simulation ── */
@@ -307,7 +304,7 @@ export default function MBTIBattleView() {
   const counts = useMemo(() => {
     const map = {};
     results.forEach(r => { map[r.type] = (map[r.type] || 0) + 1; });
-    return ALL_TYPES
+    return Object.keys(mbtiDescriptions)
       .map(type => ({ type, count: map[type] || 0, ...mbtiDescriptions[type] }))
       .sort((a, b) => b.count - a.count || a.type.localeCompare(b.type));
   }, [results]);

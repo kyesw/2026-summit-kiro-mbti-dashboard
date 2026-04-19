@@ -1,12 +1,9 @@
 import { useState, useEffect, useRef } from 'react';
 import { motion, useAnimationControls } from 'framer-motion';
-import { getResults, addResult, mbtiDescriptions } from '../data/mbti';
+import { getTotalCount, simulateOne } from '../data/dataService';
 import NightSky from '../components/NightSky';
 import FlipCounter from '../components/FlipCounter';
 import kiroGhost from '../assets/kiro-ghost.svg';
-
-const ALL_TYPES = Object.keys(mbtiDescriptions);
-const simulateOne = () => addResult(ALL_TYPES[Math.floor(Math.random() * ALL_TYPES.length)]);
 
 function useKiroTricks(controls) {
   const trickIdx = useRef(0);
@@ -110,7 +107,7 @@ function useKiroTricks(controls) {
 }
 
 export default function HeroView() {
-  const [count, setCount] = useState(() => getResults().length);
+  const [count, setCount] = useState(() => getTotalCount());
   const controls = useAnimationControls();
 
   useKiroTricks(controls);
@@ -124,7 +121,7 @@ export default function HeroView() {
   }, [controls]);
 
   useEffect(() => {
-    const update = () => setCount(getResults().length);
+    const update = () => setCount(getTotalCount());
     window.addEventListener('mbti-update', update);
     window.addEventListener('storage', update);
     const pollInterval = setInterval(update, 5000);

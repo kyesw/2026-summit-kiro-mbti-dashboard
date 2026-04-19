@@ -15,13 +15,13 @@ function randBetween(min, max) {
 }
 
 const sampleSurvey = {
-  role: { '개발자/엔지니어': randBetween(5, 30), 'PM/기획자': randBetween(5, 30), '디자이너': randBetween(5, 30), '데이터 분석가': randBetween(5, 30), '마케터/비즈니스': randBetween(5, 30), '학생/취준생': randBetween(5, 30) },
+  role: { '개발자/엔지니어': randBetween(5, 30), 'PM/기획자': randBetween(5, 30), '디자이너': randBetween(5, 30), '데이터 분석가': randBetween(5, 30), '마케터/비즈니스/세일즈': randBetween(5, 30), '학생/취준생': randBetween(5, 30) },
   ai_usage: { '매일 쓴다': randBetween(5, 30), '주 2~3회': randBetween(5, 30), '가끔': randBetween(5, 30), '거의 안 쓴다': randBetween(5, 30) },
-  ai_style: { '목표 전달, 결과 수령': randBetween(5, 30), '단계별 협업': randBetween(5, 30), '참고 후 직접 작업': randBetween(5, 30) },
+  ai_style: { '문서 작성': randBetween(5, 30), '자료 검색/요약': randBetween(5, 30), '코드 작성': randBetween(5, 30), '아이디어 브레인스토밍': randBetween(5, 30), '번역/외국어': randBetween(5, 30), '아직 안 써봤다': randBetween(5, 30) },
   ai_expect: { '알아서 처리': randBetween(5, 30), '체계적 계획 수립': randBetween(5, 30), '즉각 아이디어 구현': randBetween(5, 30), '반복 작업 자동화': randBetween(5, 30) },
 };
 
-export const ROLES = ['개발자/엔지니어', 'PM/기획자', '디자이너', '데이터 분석가', '마케터/비즈니스', '학생/취준생'];
+export const ROLES = ['개발자/엔지니어', 'PM/기획자', '디자이너', '데이터 분석가', '마케터/비즈니스/세일즈', '학생/취준생'];
 
 function generateQuestionData() {
   const data = {};
