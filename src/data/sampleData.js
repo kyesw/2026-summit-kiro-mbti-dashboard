@@ -1,0 +1,109 @@
+const STORAGE_KEY = 'mbti_expo_results';
+const SURVEY_KEY = 'mbti_expo_survey';
+const QUESTIONS_KEY = 'mbti_expo_questions';
+const QUESTIONS_BY_ROLE_KEY = 'mbti_expo_questions_by_role';
+
+const sampleDistribution = {
+  ISTJ: randBetween(3, 50), ISFJ: randBetween(3, 50), INFJ: randBetween(3, 50), INTJ: randBetween(3, 50),
+  ISTP: randBetween(3, 50), ISFP: randBetween(3, 50), INFP: randBetween(3, 50), INTP: randBetween(3, 50),
+  ESTP: randBetween(3, 50), ESFP: randBetween(3, 50), ENFP: randBetween(3, 50), ENTP: randBetween(3, 50),
+  ESTJ: randBetween(3, 50), ESFJ: randBetween(3, 50), ENFJ: randBetween(3, 50), ENTJ: randBetween(3, 50),
+};
+
+function randBetween(min, max) {
+  return min + Math.floor(Math.random() * (max - min + 1));
+}
+
+const sampleSurvey = {
+  role: { '개발자/엔지니어': randBetween(5, 30), 'PM/기획자': randBetween(5, 30), '디자이너': randBetween(5, 30), '데이터 분석가': randBetween(5, 30), '마케터/비즈니스': randBetween(5, 30), '학생/취준생': randBetween(5, 30) },
+  ai_usage: { '매일 쓴다': randBetween(5, 30), '주 2~3회': randBetween(5, 30), '가끔': randBetween(5, 30), '거의 안 쓴다': randBetween(5, 30) },
+  ai_style: { '목표 전달, 결과 수령': randBetween(5, 30), '단계별 협업': randBetween(5, 30), '참고 후 직접 작업': randBetween(5, 30) },
+  ai_expect: { '알아서 처리': randBetween(5, 30), '체계적 계획 수립': randBetween(5, 30), '즉각 아이디어 구현': randBetween(5, 30), '반복 작업 자동화': randBetween(5, 30) },
+};
+
+export const ROLES = ['개발자/엔지니어', 'PM/기획자', '디자이너', '데이터 분석가', '마케터/비즈니스', '학생/취준생'];
+
+function generateQuestionData() {
+  const data = {};
+  for (let i = 1; i <= 12; i++) {
+    data[i] = { a: randBetween(10, 50), b: randBetween(10, 50) };
+  }
+  return data;
+}
+
+function generateQuestionDataByRole() {
+  const data = {};
+  for (let i = 1; i <= 12; i++) {
+    data[i] = {};
+    for (const role of ROLES) {
+      data[i][role] = { a: randBetween(3, 20), b: randBetween(3, 20) };
+    }
+  }
+  return data;
+}
+
+export function seedSampleData() {
+  const results = [];
+  const now = Date.now();
+  Object.entries(sampleDistribution).forEach(([type, count]) => {
+    for (let i = 0; i < count; i++) {
+      results.push({ type, timestamp: now - Math.floor(Math.random() * 3600000) });
+    }
+  });
+  for (let i = results.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [results[i], results[j]] = [results[j], results[i]];
+  }
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(results));
+  localStorage.setItem(SURVEY_KEY, JSON.stringify(sampleSurvey));
+  localStorage.setItem(QUESTIONS_KEY, JSON.stringify(generateQuestionData()));
+  localStorage.setItem(QUESTIONS_BY_ROLE_KEY, JSON.stringify(generateQuestionDataByRole()));
+  window.dispatchEvent(new Event('mbti-update'));
+  return results.length;
+}
+
+export function getSurveyResults() {
+  return JSON.parse(localStorage.getItem(SURVEY_KEY) || '{}');
+}
+
+export function getQuestionResults() {
+  return JSON.parse(localStorage.getItem(QUESTIONS_KEY) || '{}');
+}
+
+export function getQuestionResultsByRole() {
+  return JSON.parse(localStorage.getItem(QUESTIONS_BY_ROLE_KEY) || '{}');
+}
+
+export function simulateQuestionResults() {
+  const data = getQuestionResults();
+  for (let i = 1; i <= 12; i++) {
+    data[i] = { a: randBetween(10, 50), b: randBetween(10, 50) };
+  }
+  localStorage.setItem(QUESTIONS_KEY, JSON.stringify(data));
+
+  const byRole = getQuestionResultsByRole();
+  for (let i = 1; i <= 12; i++) {
+    if (!byRole[i]) byRole[i] = {};
+    for (const role of ROLES) {
+      byRole[i][role] = { a: randBetween(3, 20), b: randBetween(3, 20) };
+    }
+  }
+  localStorage.setItem(QUESTIONS_BY_ROLE_KEY, JSON.stringify(byRole));
+  window.dispatchEvent(new Event('mbti-update'));
+}
+
+export function addRandomSurveyResult() {
+  const survey = getSurveyResults();
+  const categories = Object.keys(survey);
+  if (categories.length === 0) return;
+  for (const cat of categories) {
+    const options = Object.keys(survey[cat]);
+    // Pick a random winner, give it a high value, rest get similar lower values
+    const winnerIdx = Math.floor(Math.random() * options.length);
+    options.forEach((opt, i) => {
+      survey[cat][opt] = i === winnerIdx ? randBetween(25, 40) : randBetween(8, 22);
+    });
+  }
+  localStorage.setItem(SURVEY_KEY, JSON.stringify(survey));
+  window.dispatchEvent(new Event('mbti-update'));
+}
