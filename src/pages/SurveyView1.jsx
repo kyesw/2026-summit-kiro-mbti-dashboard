@@ -1,59 +1,13 @@
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { getQuestionResults, getQuestionResultsByRole, simulateQuestionResults, ROLES } from '../data/dataService';
-import { surveyQuestions } from '../data/survey';
 import { mbtiQuestions, getAxisColors } from '../data/mbtiQuestions';
 import NightSky from '../components/NightSky';
+import kiroGhost from '../assets/kiro-ghost.svg';
 
-const ROLE_COLORS = surveyQuestions[0].colors;
-
-const VISIBLE_COUNT = 6;
-
-function AnimatedNumber({ value, style, className }) {
-  const [display, setDisplay] = useState(value);
-
-  useEffect(() => {
-    const start = display;
-    const diff = value - start;
-    if (diff === 0) return;
-    const duration = 400;
-    const startTime = performance.now();
-    const step = (now) => {
-      const t = Math.min((now - startTime) / duration, 1);
-      setDisplay(Math.round(start + diff * t));
-      if (t < 1) requestAnimationFrame(step);
-    };
-    requestAnimationFrame(step);
-  }, [value]);
-
-  return <span style={style} className={className}>{display}%</span>;
-}
-
-function QuestionRow({ q, data, isActive }) {
-  const [colorA, colorB] = getAxisColors(q.axis);
-  const total = data.a + data.b;
-  const pctA = total > 0 ? Math.round((data.a / total) * 100) : 50;
-  const pctB = 100 - pctA;
-
-  return (
-    <div className={`qrow${isActive ? ' qrow-active' : ''}`}>
-      <div className="qrow-line1">
-        <span className="qrow-num">Q{q.id}</span>
-        <p className="qrow-text">{q.question}</p>
-      </div>
-      <div className="qrow-line2">
-        <span className="qrow-choice-text" style={{ color: `${colorA}90` }}>{q.choices[0].short || q.choices[0].text}</span>
-        <span className="qrow-pct" style={{ color: `${colorA}aa` }}>{pctA}%</span>
-        <span className="qrow-vs">vs</span>
-        <span className="qrow-pct" style={{ color: `${colorB}aa` }}>{pctB}%</span>
-        <span className="qrow-choice-text qrow-choice-right" style={{ color: `${colorB}90` }}>{q.choices[1].short || q.choices[1].text}</span>
-      </div>
-    </div>
-  );
-}
 
 export default function SurveyView1() {
-  const [questionData, setQuestionData] = useState(getQuestionResults());
+  const [data, setData] = useState(getQuestionResults());
   const [roleData, setRoleData] = useState(getQuestionResultsByRole());
   const [idx, setIdx] = useState(0);
 
@@ -64,146 +18,153 @@ export default function SurveyView1() {
 
   useEffect(() => {
     const update = () => {
-      setQuestionData(getQuestionResults());
+      setData(getQuestionResults());
       setRoleData(getQuestionResultsByRole());
     };
     window.addEventListener('mbti-update', update);
     window.addEventListener('storage', update);
-    const interval = setInterval(update, 5000);
-    const simInterval = setInterval(simulateQuestionResults, 5000);
+    const poll = setInterval(update, 5000);
+    const sim = setInterval(simulateQuestionResults, 5000);
     return () => {
       window.removeEventListener('mbti-update', update);
       window.removeEventListener('storage', update);
-      clearInterval(interval);
-      clearInterval(simInterval);
+      clearInterval(poll);
+      clearInterval(sim);
     };
   }, []);
 
-  const visibleQuestions = useMemo(() => {
-    const result = [];
-    for (let i = 0; i < VISIBLE_COUNT; i++) {
-      const qi = (idx + i) % mbtiQuestions.length;
-      result.push(mbtiQuestions[qi]);
-    }
-    return result;
-  }, [idx]);
-
   const q = mbtiQuestions[idx];
-  const data = questionData[q.id] || { a: 0, b: 0 };
-  const totalAll = data.a + data.b;
-  const overallA = totalAll > 0 ? Math.round((data.a / totalAll) * 100) : 50;
-  const overallB = 100 - overallA;
+  const d = data[q.id] || { a: 0, b: 0 };
+  const total = d.a + d.b;
+  const pctA = total > 0 ? Math.round((d.a / total) * 100) : 50;
+  const pctB = 100 - pctA;
   const [colorA, colorB] = getAxisColors(q.axis);
-  const qRoleData = roleData[q.id] || {};
+  const winA = pctA >= pctB;
+
+  const qRoles = roleData[q.id] || {};
+  const roleSplits = ROLES.map(role => {
+    const rd = qRoles[role] || { a: 0, b: 0 };
+    const t = rd.a + rd.b;
+    const ratioA = t > 0 ? rd.a / t : 0.5;
+    return { role, ratioA, pctA: Math.round(ratioA * 100) };
+  });
+  const rolesA = roleSplits.filter(r => r.ratioA >= 0.5).sort((a, b) => b.ratioA - a.ratioA);
+  const rolesB = roleSplits.filter(r => r.ratioA < 0.5).sort((a, b) => a.ratioA - b.ratioA);
 
   return (
-    <div className="sv1-view">
+    <div className="q3-view">
       <NightSky />
-      <div className="qshow-body">
-        <div className="qshow-featured">
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={q.id}
-              className="qshow-card"
-              initial={{ opacity: 0, y: 40 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -40 }}
-              transition={{ duration: 0.5, ease: [0.25, 0.1, 0.25, 1] }}
-            >
-              <div className="qshow-meta">
-                <span className="qshow-num">Q{q.id}</span>
-              </div>
 
-              <p className="qshow-text">{q.question}</p>
-
-              <div className="qshow-choice-labels">
-                <span>{q.choices[0].short || q.choices[0].text}</span>
-                <span>{q.choices[1].short || q.choices[1].text}</span>
-              </div>
-
-              <div className="qshow-overall">
-                <span className="qshow-overall-label">전체</span>
-                <span className="qshow-role-pct">{overallA}%</span>
-                <div className="qshow-overall-bar">
-                  <motion.div
-                    className="qshow-role-bar-a"
-                    style={{ background: colorA }}
-                    initial={false}
-                    animate={{ width: `${overallA}%` }}
-                    transition={{ duration: 0.8, ease: [0.25, 0.1, 0.25, 1] }}
-                  />
-                  <motion.div
-                    className="qshow-role-bar-b"
-                    style={{ background: colorB }}
-                    initial={false}
-                    animate={{ width: `${overallB}%` }}
-                    transition={{ duration: 0.8, ease: [0.25, 0.1, 0.25, 1] }}
-                  />
-                </div>
-                <span className="qshow-role-pct">{overallB}%</span>
-              </div>
-
-              <div className="qshow-roles-divider" />
-
-              <div className="qshow-roles">
-                {ROLES.map((role, ri) => {
-                  const rd = qRoleData[role] || { a: 0, b: 0 };
-                  const total = rd.a + rd.b;
-                  const pctA = total > 0 ? Math.round((rd.a / total) * 100) : 50;
-                  const pctB = 100 - pctA;
-                  const rc = ROLE_COLORS[ri];
-                  return (
-                    <div key={role} className="qshow-role-row">
-                      <span className="qshow-role-name">{role}</span>
-                      <div className="qshow-role-bar">
-                        <motion.div
-                          className="qshow-role-bar-a"
-                          style={{ background: pctA >= pctB ? rc : `${rc}40` }}
-                          initial={false}
-                          animate={{ width: `${pctA}%` }}
-                          transition={{ duration: 0.8, ease: [0.25, 0.1, 0.25, 1] }}
-                        />
-                        <motion.div
-                          className="qshow-role-bar-b"
-                          style={{ background: pctB > pctA ? rc : `${rc}40` }}
-                          initial={false}
-                          animate={{ width: `${pctB}%` }}
-                          transition={{ duration: 0.8, ease: [0.25, 0.1, 0.25, 1] }}
-                        />
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-            </motion.div>
-          </AnimatePresence>
-        </div>
-
-        <div className="qshow-list-side">
-          <h2 className="qshow-list-title">MBTI 질문</h2>
-          <div className="qshow-list">
-            <AnimatePresence mode="popLayout" initial={false}>
-              {visibleQuestions.map((mq, i) => (
-                <motion.div
-                  key={mq.id}
-                  layout
-                  initial={{ opacity: 0, y: 40 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -60 }}
-                  transition={{ duration: 0.45, ease: [0.25, 0.1, 0.25, 1] }}
-                  style={{ flex: 1, display: 'flex', minHeight: 0 }}
-                >
-                  <QuestionRow
-                    q={mq}
-                    data={questionData[mq.id] || { a: 0, b: 0 }}
-                    isActive={i === 0}
-                  />
-                </motion.div>
-              ))}
-            </AnimatePresence>
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={q.id}
+          className="q3-split"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.5 }}
+        >
+          {/* Question bar at top */}
+          <div className="q3-top">
+            <span className="q3-qnum">Q{q.id}</span>
+            <p className="q3-question">{q.question}</p>
           </div>
-        </div>
-      </div>
+
+          {/* Split halves */}
+          <div className="q3-halves">
+            <motion.div
+              className="q3-half q3-half-a"
+              animate={{ flex: pctA }}
+              transition={{ duration: 0.8, ease: [0.25, 0.1, 0.25, 1] }}
+              style={{ background: `linear-gradient(135deg, ${colorA}18 0%, ${colorA}08 100%)` }}
+            >
+              <motion.img
+                src={kiroGhost}
+                alt=""
+                className="q3-half-icon"
+                animate={{ scale: winA ? 1 : 0.8, opacity: winA ? 0.9 : 0.3 }}
+                transition={{ duration: 0.6 }}
+                style={{ filter: `drop-shadow(0 0 20px ${colorA}50)` }}
+              />
+              <motion.span
+                className="q3-half-pct"
+                style={{ color: colorA, filter: winA ? `drop-shadow(0 0 30px ${colorA}60)` : 'none' }}
+                animate={{ scale: winA ? 1 : 0.75, opacity: winA ? 1 : 0.4 }}
+                transition={{ duration: 0.6 }}
+              >
+                {pctA}%
+              </motion.span>
+              <p className="q3-half-text" style={{ opacity: winA ? 0.8 : 0.4 }}>
+                {q.choices[0].short || q.choices[0].text}
+              </p>
+              {rolesA.length > 0 && (
+                <div className="q3-half-roles">
+                  {rolesA.map((r, i) => (
+                    <span
+                      key={r.role}
+                      className="q3-half-role"
+                      style={{ borderColor: `${colorA}${i === 0 ? '40' : '20'}`, color: `${colorA}cc`, opacity: i === 0 ? 1 : 0.6 }}
+                    >{r.role}</span>
+                  ))}
+                </div>
+              )}
+            </motion.div>
+
+            <div className="q3-divider">
+              <div className="q3-divider-line" />
+            </div>
+
+            <motion.div
+              className="q3-half q3-half-b"
+              animate={{ flex: pctB }}
+              transition={{ duration: 0.8, ease: [0.25, 0.1, 0.25, 1] }}
+              style={{ background: `linear-gradient(225deg, ${colorB}18 0%, ${colorB}08 100%)` }}
+            >
+              <motion.img
+                src={kiroGhost}
+                alt=""
+                className="q3-half-icon q3-half-icon-flip"
+                animate={{ scale: !winA ? 1 : 0.8, opacity: !winA ? 0.9 : 0.3 }}
+                transition={{ duration: 0.6 }}
+                style={{ filter: `drop-shadow(0 0 20px ${colorB}50)` }}
+              />
+              <motion.span
+                className="q3-half-pct"
+                style={{ color: colorB, filter: !winA ? `drop-shadow(0 0 30px ${colorB}60)` : 'none' }}
+                animate={{ scale: !winA ? 1 : 0.75, opacity: !winA ? 1 : 0.4 }}
+                transition={{ duration: 0.6 }}
+              >
+                {pctB}%
+              </motion.span>
+              <p className="q3-half-text" style={{ opacity: !winA ? 0.8 : 0.4 }}>
+                {q.choices[1].short || q.choices[1].text}
+              </p>
+              {rolesB.length > 0 && (
+                <div className="q3-half-roles">
+                  {rolesB.map((r, i) => (
+                    <span
+                      key={r.role}
+                      className="q3-half-role"
+                      style={{ borderColor: `${colorB}${i === 0 ? '40' : '20'}`, color: `${colorB}cc`, opacity: i === 0 ? 1 : 0.6 }}
+                    >{r.role}</span>
+                  ))}
+                </div>
+              )}
+            </motion.div>
+          </div>
+
+          {/* Progress dots */}
+          <div className="q3-dots">
+            {mbtiQuestions.map((_, i) => (
+              <div
+                key={i}
+                className={`q3-dot${i === idx ? ' q3-dot-active' : ''}`}
+                style={i === idx ? { background: colorA } : undefined}
+              />
+            ))}
+          </div>
+        </motion.div>
+      </AnimatePresence>
     </div>
   );
 }

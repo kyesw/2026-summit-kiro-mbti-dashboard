@@ -11,7 +11,7 @@ export const surveyQuestions = [
     label: 'AI 어시스턴트를 얼마나 쓰시나요?',
     shortLabel: 'AI 사용 빈도',
     options: ['매일 쓴다', '주 2~3회', '가끔', '거의 안 쓴다'],
-    colors: ['#4CAF50', '#1ABC9C', '#FFC107', '#E91E63'],
+    colors: ['#6C63FF', '#1ABC9C', '#FF9800', '#FF6584'],
   },
   {
     id: 'ai_style',

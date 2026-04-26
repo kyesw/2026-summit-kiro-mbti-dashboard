@@ -21,84 +21,101 @@ function useRanked(data, question) {
   }, [data, question]);
 }
 
-/* ── Top-left: 직군 — Horizontal ranked bars ── */
-function RoleBars({ data, question }) {
+/* ── Top-left: 직군 — Podium ── */
+const PODIUM_ORDER = [1, 0, 2];
+const PODIUM_MEDALS = ['🥈', '🥇', '🥉'];
+const PODIUM_HEIGHTS = [120, 180, 80];
+
+function RolePodium({ data, question }) {
   const items = useRanked(data, question);
-  const maxPct = Math.max(...items.map(i => i.pct), 1);
+  const top3 = PODIUM_ORDER.map(i => items[i]).filter(Boolean);
+  const rest = items.slice(3);
 
   return (
     <div className="sv2-cell">
       <h2 className="sv2-cell-title">{question.shortLabel}</h2>
-      <div className="sv2-bars">
-        <AnimatePresence mode="popLayout">
-          {items.map((item, i) => (
-            <motion.div
-              key={item.label}
-              className="sv2-bar-row"
-              layout
-              transition={{ duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
-            >
-              <span className="sv2-bar-rank" style={{ color: i === 0 ? item.color : 'var(--muted)' }}>
-                {i === 0 ? '👑' : `${i + 1}`}
-              </span>
-              <span className="sv2-bar-label">{item.label}</span>
-              <div className="sv2-bar-track">
-                <motion.div
-                  className="sv2-bar-fill"
-                  style={{ background: item.color }}
-                  initial={false}
-                  animate={{ width: `${(item.pct / maxPct) * 100}%` }}
-                  transition={{ duration: 0.8, ease: [0.25, 0.1, 0.25, 1] }}
-                />
+      <div className="sv2-podium-wrap">
+        <div className="sv2-podium">
+          {top3.map((item, pi) => {
+            const rank = PODIUM_ORDER[pi];
+            return (
+              <div key={item.label} className="sv2-podium-slot">
+                <span className="sv2-podium-medal">{PODIUM_MEDALS[pi]}</span>
+                <span className="sv2-podium-pct" style={{ color: item.color }}>{item.pct}%</span>
+                <span className="sv2-podium-name">{item.label}</span>
+                <div
+                  className="sv2-podium-bar"
+                  style={{ background: `linear-gradient(to top, ${item.color}30, ${item.color}10)`, borderColor: `${item.color}40`, height: PODIUM_HEIGHTS[pi] }}
+                >
+                  <span className="sv2-podium-rank" style={{ color: item.color }}>{rank + 1}</span>
+                </div>
               </div>
-              <span className="sv2-bar-pct" style={{ color: item.color }}>{item.pct}%</span>
-            </motion.div>
-          ))}
-        </AnimatePresence>
+            );
+          })}
+        </div>
+        {rest.length > 0 && (
+          <div className="sv2-podium-rest">
+            {rest.map((item, i) => (
+              <span key={item.label} className="sv2-podium-rest-item" style={{ color: item.color }}>
+                {i + 4}. {item.label} ({item.pct}%)
+              </span>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );
 }
 
-/* ── Top-right: AI 사용 빈도 — Arc rings ── */
-function UsageArcs({ data, question }) {
+/* ── Top-right: AI 사용 빈도 — Pie chart (pure SVG) ── */
+const PIE_R = 90;
+const PIE_CX = 120;
+const PIE_CY = 120;
+
+function pieSlicePath(cx, cy, r, startAngle, endAngle) {
+  const s = (startAngle - 90) * Math.PI / 180;
+  const e = (endAngle - 90) * Math.PI / 180;
+  const x1 = cx + r * Math.cos(s);
+  const y1 = cy + r * Math.sin(s);
+  const x2 = cx + r * Math.cos(e);
+  const y2 = cy + r * Math.sin(e);
+  const large = endAngle - startAngle > 180 ? 1 : 0;
+  return `M ${cx} ${cy} L ${x1} ${y1} A ${r} ${r} 0 ${large} 1 ${x2} ${y2} Z`;
+}
+
+function UsagePie({ data, question }) {
   const items = useRanked(data, question);
-  const r0 = 60;
-  const gap = 22;
+
+  let angle = 0;
+  const slices = items.map((item) => {
+    const sweep = (item.pct / 100) * 360;
+    const slice = { ...item, start: angle, end: angle + sweep };
+    angle += sweep;
+    return slice;
+  });
 
   return (
     <div className="sv2-cell">
       <h2 className="sv2-cell-title">{question.shortLabel}</h2>
-      <div className="sv2-arcs-wrap">
-        <svg viewBox="0 0 300 300" className="sv2-arcs-svg">
-          {items.map((item, i) => {
-            const r = r0 + i * gap;
-            const circumference = 2 * Math.PI * r;
-            const arcLen = (item.pct / 100) * circumference;
-            return (
-              <motion.circle
-                key={item.label}
-                cx="150" cy="150" r={r}
-                fill="none"
-                stroke={item.color}
-                strokeWidth="17"
-                strokeLinecap="round"
-                strokeDasharray={`${arcLen} ${circumference}`}
-                initial={false}
-                animate={{ strokeDasharray: `${arcLen} ${circumference}` }}
-                transition={{ duration: 0.8, ease: [0.25, 0.1, 0.25, 1] }}
-                style={{ filter: i === 0 ? `drop-shadow(0 0 6px ${item.color}66)` : 'none' }}
-                transform="rotate(-90 150 150)"
-              />
-            );
-          })}
+      <div className="sv2-pie-wrap">
+        <svg viewBox="0 0 240 240" className="sv2-pie-svg">
+          {slices.map((sl, i) => (
+            <path
+              key={sl.label}
+              d={pieSlicePath(PIE_CX, PIE_CY, PIE_R, sl.start, sl.end)}
+              fill={`${sl.color}18`}
+              stroke={`${sl.color}40`}
+              strokeWidth={1}
+              style={{ filter: i === 0 ? `drop-shadow(0 0 12px ${sl.color}30)` : 'none' }}
+            />
+          ))}
         </svg>
-        <div className="sv2-arcs-legend">
-          {items.map((item, i) => (
-            <div key={item.label} className="sv2-arcs-item">
-              <span className="sv2-arcs-dot" style={{ background: item.color }} />
-              <span className="sv2-arcs-name">{item.label}</span>
-              <span className="sv2-arcs-pct" style={{ color: item.color }}>{item.pct}%</span>
+        <div className="sv2-pie-legend">
+          {items.map((item) => (
+            <div key={item.label} className="sv2-pie-item">
+              <span className="sv2-pie-dot" style={{ background: item.color }} />
+              <span className="sv2-pie-name">{item.label}</span>
+              <span className="sv2-pie-pct" style={{ color: item.color }}>{item.pct}%</span>
             </div>
           ))}
         </div>
@@ -190,8 +207,8 @@ export default function SurveyView2() {
     <div className="sv2-view">
       <NightSky />
       <div className="sv2-grid">
-        <RoleBars data={survey.role || {}} question={ROLE_Q} />
-        <UsageArcs data={survey.ai_usage || {}} question={USAGE_Q} />
+        <RolePodium data={survey.role || {}} question={ROLE_Q} />
+        <UsagePie data={survey.ai_usage || {}} question={USAGE_Q} />
         <StyleBlocks data={survey.ai_style || {}} question={STYLE_Q} />
         <ExpectCircles data={survey.ai_expect || {}} question={EXPECT_Q} />
       </div>
