@@ -2,6 +2,7 @@ const STORAGE_KEY = 'mbti_expo_results';
 const SURVEY_KEY = 'mbti_expo_survey';
 const QUESTIONS_KEY = 'mbti_expo_questions';
 const QUESTIONS_BY_ROLE_KEY = 'mbti_expo_questions_by_role';
+const MBTI_BY_ROLE_KEY = 'mbti_expo_mbti_by_role';
 
 const sampleDistribution = {
   ISTJ: randBetween(3, 50), ISFJ: randBetween(3, 50), INFJ: randBetween(3, 50), INTJ: randBetween(3, 50),
@@ -42,6 +43,25 @@ function generateQuestionDataByRole() {
   return data;
 }
 
+function generateMbtiByRole() {
+  const ALL_TYPES = Object.keys(sampleDistribution);
+  const data = {};
+  for (const type of ALL_TYPES) {
+    const total = sampleDistribution[type];
+    const splits = ROLES.map(() => randBetween(1, 10));
+    const sum = splits.reduce((a, b) => a + b, 0);
+    data[type] = {};
+    ROLES.forEach((role, i) => {
+      data[type][role] = Math.max(1, Math.round((splits[i] / sum) * total));
+    });
+  }
+  return data;
+}
+
+export function getMbtiByRole() {
+  return JSON.parse(localStorage.getItem(MBTI_BY_ROLE_KEY) || '{}');
+}
+
 export function seedSampleData() {
   const results = [];
   const now = Date.now();
@@ -58,6 +78,7 @@ export function seedSampleData() {
   localStorage.setItem(SURVEY_KEY, JSON.stringify(sampleSurvey));
   localStorage.setItem(QUESTIONS_KEY, JSON.stringify(generateQuestionData()));
   localStorage.setItem(QUESTIONS_BY_ROLE_KEY, JSON.stringify(generateQuestionDataByRole()));
+  localStorage.setItem(MBTI_BY_ROLE_KEY, JSON.stringify(generateMbtiByRole()));
   window.dispatchEvent(new Event('mbti-update'));
   return results.length;
 }

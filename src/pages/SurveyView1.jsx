@@ -74,9 +74,7 @@ export default function SurveyView1() {
           <div className="q3-halves">
             <motion.div
               className="q3-half q3-half-a"
-              animate={{ flex: pctA }}
-              transition={{ duration: 0.8, ease: [0.25, 0.1, 0.25, 1] }}
-              style={{ background: `linear-gradient(135deg, ${colorA}18 0%, ${colorA}08 100%)` }}
+              style={{ flex: 1, background: `linear-gradient(135deg, ${colorA}18 0%, ${colorA}08 100%)` }}
             >
               <motion.img
                 src={kiroGhost}
@@ -116,9 +114,7 @@ export default function SurveyView1() {
 
             <motion.div
               className="q3-half q3-half-b"
-              animate={{ flex: pctB }}
-              transition={{ duration: 0.8, ease: [0.25, 0.1, 0.25, 1] }}
-              style={{ background: `linear-gradient(225deg, ${colorB}18 0%, ${colorB}08 100%)` }}
+              style={{ flex: 1, background: `linear-gradient(225deg, ${colorB}18 0%, ${colorB}08 100%)` }}
             >
               <motion.img
                 src={kiroGhost}

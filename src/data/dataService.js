@@ -6,6 +6,7 @@ import {
   getQuestionResultsByRole as localGetQuestionResultsByRole,
   simulateQuestionResults as localSimulateQuestionResults,
   addRandomSurveyResult as localAddRandomSurveyResult,
+  getMbtiByRole as localGetMbtiByRole,
 } from './sampleData';
 
 // ── Toggle: set to true to fetch from API, false for localStorage demo ──
@@ -73,6 +74,11 @@ export function getQuestionResults() {
 export function getQuestionResultsByRole() {
   if (USE_API) return _cache?.questions_by_role || {};
   return localGetQuestionResultsByRole();
+}
+
+export function getMbtiByRole() {
+  if (USE_API) return _cache?.mbti_by_role || {};
+  return localGetMbtiByRole();
 }
 
 let _simIdx = 0;

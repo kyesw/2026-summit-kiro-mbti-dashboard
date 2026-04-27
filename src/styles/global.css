@@ -502,6 +502,13 @@ body {
   position: relative; z-index: 1;
   min-height: 0;
 }
+.sv2-grid-3 {
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+}
+.sv2-cell-wide {
+  grid-column: 1 / -1;
+}
 
 .sv2-cell {
   display: flex; flex-direction: column;
@@ -516,112 +523,292 @@ body {
   text-align: center;
 }
 
-/* Podium (직군) */
-.sv2-podium-wrap {
+/* Lollipop chart (AI 주요 활용) */
+.sv2-lollipop-wrap {
+  flex: 1; display: flex; align-items: flex-end; justify-content: center;
+  gap: 1.5rem; padding: 0 2rem 1rem; min-height: 0;
+}
+.sv2-lollipop-col {
   flex: 1; display: flex; flex-direction: column;
-  justify-content: center; align-items: center;
-  min-height: 0;
+  align-items: center; gap: 0.4rem; max-width: 120px;
 }
-.sv2-podium {
-  display: flex; align-items: flex-end;
-  justify-content: center; gap: 0.75rem;
+.sv2-lollipop-pct {
+  font-size: var(--fs-subtitle); font-weight: 900; line-height: 1;
 }
-.sv2-podium-slot {
-  flex: 1; max-width: 10rem;
-  display: flex; flex-direction: column;
-  align-items: center; gap: 0.3rem;
+.sv2-lollipop-stem-wrap {
+  display: flex; flex-direction: column; align-items: center;
 }
-.sv2-podium-medal { font-size: 1.5rem; }
-.sv2-podium-pct {
-  font-size: var(--fs-stat-lg); font-weight: 900; line-height: 1;
+.sv2-lollipop-circle {
+  width: 18px; height: 18px; border-radius: 50%; flex-shrink: 0;
 }
-.sv2-podium-name {
-  font-size: var(--fs-caption); font-weight: 600;
-  color: rgba(255,255,255,0.6); text-align: center;
-  line-height: 1.3;
+.sv2-lollipop-stem {
+  width: 3px; border-radius: 2px; flex-shrink: 0;
 }
-.sv2-podium-bar {
-  width: 100%; border-radius: 8px 8px 0 0;
-  border: 1px solid; border-bottom: none;
-  display: flex; align-items: flex-end; justify-content: center;
-  padding-bottom: 0.5rem;
-}
-.sv2-podium-rank {
-  font-size: var(--fs-stat-xl); font-weight: 900; opacity: 0.3;
-}
-.sv2-podium-rest {
-  display: flex; justify-content: center; gap: 1.5rem;
-  padding-top: 0.75rem; flex-shrink: 0;
-  border-top: 1px solid var(--border);
-  margin-top: 0.5rem;
-}
-.sv2-podium-rest-item {
-  font-size: var(--fs-caption); font-weight: 600; opacity: 0.6;
-}
-
-/* Pie chart (AI 사용 빈도) */
-.sv2-pie-wrap {
-  flex: 1; display: flex; align-items: center;
-  justify-content: center; gap: 1.5rem; min-height: 0;
-}
-.sv2-pie-svg {
-  width: 300px; height: 300px; flex-shrink: 0;
-}
-.sv2-pie-legend {
-  display: flex; flex-direction: column; gap: 0.75rem;
-}
-.sv2-pie-item {
-  display: flex; align-items: center; gap: 0.6rem;
-}
-.sv2-pie-dot {
-  width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0;
-}
-.sv2-pie-name {
-  font-size: var(--fs-body); color: rgba(255,255,255,0.6); font-weight: 600;
-}
-.sv2-pie-pct {
-  font-size: var(--fs-subtitle); font-weight: 800; min-width: 2.5rem; text-align: right;
-}
-
-/* Proportional blocks (사용 스타일) */
-.sv2-blocks-wrap {
-  flex: 1; display: flex; flex-direction: column;
-  justify-content: center; gap: 1rem;
-}
-.sv2-blocks {
-  display: flex; gap: 0.5rem; height: 140px;
-}
-.sv2-block {
-  display: flex; flex-direction: column;
-  align-items: center; justify-content: center;
-  gap: 0.4rem; border-radius: 12px;
-  border: 1px solid; min-width: 0;
-  padding: 1rem 0.5rem;
-}
-.sv2-block-pct {
-  font-size: var(--fs-stat-lg); font-weight: 900; line-height: 1; letter-spacing: -.03em;
-}
-.sv2-block-label {
-  font-size: var(--fs-caption); font-weight: 600; color: rgba(255,255,255,0.6);
+.sv2-lollipop-label {
+  font-size: var(--fs-micro); font-weight: 600; color: rgba(255,255,255,0.5);
   text-align: center; line-height: 1.3;
 }
 
-/* Sized circles (AI에 기대하는 것) */
-.sv2-circles-wrap {
-  flex: 1; display: flex; align-items: center;
-  justify-content: center; gap: 1.2rem;
-  flex-wrap: wrap;
+/* Gauge chart (AI 사용 빈도) */
+.sv2-gauge-wrap {
+  flex: 1; display: flex; flex-direction: column;
+  align-items: center; justify-content: center; gap: 1.25rem; min-height: 0;
 }
-.sv2-circle {
-  border-radius: 50%; display: flex;
-  flex-direction: column; align-items: center;
-  justify-content: center; gap: 0.25rem;
+.sv2-gauge-svg {
+  width: 280px; height: 160px; flex-shrink: 0;
+}
+.sv2-gauge-legend {
+  display: flex; flex-direction: column; gap: 0.5rem; width: 100%; max-width: 240px;
+}
+.sv2-gauge-legend-item {
+  display: flex; align-items: center; gap: 0.6rem;
+}
+.sv2-gauge-legend-dot {
+  width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0;
+}
+.sv2-gauge-legend-name {
+  font-size: var(--fs-body); color: rgba(255,255,255,0.6); font-weight: 600; flex: 1;
+}
+.sv2-gauge-legend-pct {
+  font-size: var(--fs-subtitle); font-weight: 800; min-width: 2.5rem; text-align: right;
+}
+
+/* Stat cards (AI에 기대하는 것) */
+.sv2-statcards-wrap {
+  flex: 1; display: flex; flex-direction: column;
+  justify-content: center; gap: 0.6rem; min-height: 0;
+  width: 60%; align-self: center;
+}
+.sv2-statcard {
+  display: flex; align-items: center; gap: 1rem;
+  padding: 0.75rem 1.25rem; border-radius: 12px; border: 1px solid;
+  position: relative; overflow: hidden;
+}
+.sv2-statcard-top {
+  padding: 1rem 1.25rem;
+}
+.sv2-statcard-rank {
+  font-size: var(--fs-micro); font-weight: 800; font-family: monospace;
+  letter-spacing: .08em; min-width: 2rem; text-transform: uppercase;
+}
+.sv2-statcard-pct {
+  font-size: var(--fs-stat-lg); font-weight: 900; line-height: 1;
+  letter-spacing: -.03em; min-width: 4rem; text-align: right;
+}
+.sv2-statcard-top .sv2-statcard-pct {
+  font-size: var(--fs-stat-xl);
+}
+.sv2-statcard-label {
+  font-size: var(--fs-body); font-weight: 600; color: rgba(255,255,255,0.7);
+  flex: 1;
+}
+.sv2-statcard-bar-track {
+  position: absolute; bottom: 0; left: 0; right: 0;
+  height: 3px; background: rgba(255,255,255,0.04);
+  transform-origin: left;
+}
+.sv2-statcard-bar {
+  height: 100%; transform-origin: left;
+  border-radius: 0 2px 2px 0;
+}
+
+/* ── Kiro Feature View (Page 5) ── */
+.kf-view {
+  height: 100vh; width: 100vw; overflow: hidden; position: relative;
+  display: flex; flex-direction: column;
+}
+.kf-body {
+  flex: 1; display: flex; flex-direction: row;
+  min-height: 0; overflow: hidden; position: relative; z-index: 1;
+}
+.kf-divider {
+  width: 1px; align-self: stretch; flex-shrink: 0;
+  background: linear-gradient(to bottom, transparent, var(--border-hi), transparent);
+}
+
+/* Left — MBTI Top 5 */
+.kf-left {
+  flex: 6; display: flex; flex-direction: column;
+  min-height: 0; min-width: 0;
+}
+.kf-left-header {
+  display: flex; align-items: center; justify-content: center;
+  padding: 1.5rem 2rem; flex-shrink: 0;
+}
+.kf-ranks {
+  flex: 1; display: flex; flex-direction: column;
+  justify-content: center; gap: 0;
+  padding: 0.5rem 2rem 1.5rem;
+  min-height: 0;
+}
+.kf-rank-row {
+  display: flex; align-items: center; gap: 0.6rem;
+  padding: 0.3rem 0;
+}
+.kf-rank-top {
+  padding: 0.45rem 0;
+}
+.kf-rank-medal {
+  font-size: 1.1rem; min-width: 2.2rem; text-align: center;
   flex-shrink: 0;
 }
-.sv2-circle-pct {
-  font-size: var(--fs-title); font-weight: 900; line-height: 1; letter-spacing: -.02em;
+.kf-rank-top .kf-rank-medal {
+  font-size: 1.4rem;
 }
-.sv2-circle-label {
-  font-size: var(--fs-micro); font-weight: 600; color: rgba(255,255,255,0.5);
-  text-align: center; line-height: 1.2; max-width: 90%;
+.kf-rank-char {
+  width: 2.8rem; height: 2.8rem; object-fit: contain; flex-shrink: 0;
+  filter:
+    drop-shadow(0 0 4px rgba(124, 92, 252, 0.6))
+    drop-shadow(0 0 12px rgba(124, 92, 252, 0.3));
+}
+.kf-rank-char-sm {
+  width: 2rem; height: 2rem;
+  filter: drop-shadow(0 0 4px rgba(124, 92, 252, 0.3));
+}
+.kf-rank-type {
+  font-size: var(--fs-subtitle); font-weight: 900; font-family: monospace;
+  letter-spacing: .06em; line-height: 1; color: #fff;
+  min-width: 4rem; flex-shrink: 0;
+}
+.kf-rank-type-sm {
+  font-size: var(--fs-caption); color: rgba(255,255,255,0.6);
+}
+.kf-rank-bar-track {
+  flex: 1; height: 10px; border-radius: 5px;
+  background: rgba(255,255,255,0.06); overflow: hidden;
+}
+.kf-rank-top .kf-rank-bar-track {
+  height: 14px; border-radius: 7px;
+}
+.kf-rank-bar-stacked {
+  height: 100%; border-radius: inherit;
+  display: flex; overflow: hidden;
+}
+.kf-rank-bar-segment {
+  height: 100%; min-width: 0;
+}
+.kf-rank-bar-segment:first-child {
+  border-radius: inherit;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+.kf-rank-bar-segment:last-child {
+  border-radius: inherit;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+.kf-rank-legend {
+  display: flex; flex-wrap: wrap; gap: 0.5rem 1rem;
+  padding-top: 1rem; flex-shrink: 0;
+}
+.kf-rank-legend-item {
+  display: flex; align-items: center; gap: 0.4rem;
+}
+.kf-rank-legend-dot {
+  width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0;
+}
+.kf-rank-legend-label {
+  font-size: var(--fs-micro); color: rgba(255,255,255,0.5); font-weight: 600;
+}
+.kf-rank-count {
+  font-size: var(--fs-subtitle); font-weight: 900; min-width: 2.5rem;
+  text-align: right; font-family: monospace;
+}
+.kf-rank-count-sm {
+  font-size: var(--fs-caption); color: rgba(255,255,255,0.5);
+}
+
+/* Right — Kiro features */
+.kf-right {
+  flex: 4; display: flex; flex-direction: column;
+  min-height: 0; min-width: 0;
+}
+.kf-panel {
+  flex: 1; display: flex; flex-direction: column;
+  padding: 2rem 1.5rem; overflow: hidden;
+}
+.kf-panel-title {
+  font-size: var(--fs-title); font-weight: 700; color: #c084fc;
+  letter-spacing: .04em; margin: 0 0 0.4rem 0;
+  text-align: center; flex-shrink: 0;
+}
+.kf-panel-subtitle {
+  font-size: var(--fs-caption); color: rgba(255,255,255,0.4);
+  text-align: center; margin: 0 0 1.5rem 0; flex-shrink: 0;
+}
+.kf-panel-count {
+  font-weight: 800; color: #c084fc;
+}
+
+.kf-panel-list {
+  flex: 1; display: flex; flex-direction: column;
+  gap: 0.75rem; overflow-y: auto; min-height: 0;
+  scrollbar-width: none;
+}
+.kf-panel-list::-webkit-scrollbar { display: none; }
+
+.kf-feat {
+  padding: 0.75rem 1rem; border-radius: 0.75rem;
+  background: rgba(255,255,255,0.02);
+  border: 1px solid rgba(255,255,255,0.06);
+}
+.kf-feat-top {
+  padding: 1.25rem 1.25rem;
+  background: linear-gradient(135deg, rgba(144,70,255,0.06), rgba(192,132,252,0.04));
+  border: 1px solid rgba(144,70,255,0.2);
+}
+
+.kf-feat-header {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 0.75rem;
+}
+.kf-feat-left {
+  display: flex; align-items: center; gap: 0.6rem;
+}
+.kf-feat-medal { font-size: 1.5rem; }
+.kf-feat-rank {
+  font-size: 0.75rem; font-family: monospace; font-weight: 700;
+  color: rgba(255,255,255,0.25); min-width: 1.5rem;
+}
+.kf-feat-emoji { font-size: 1.25rem; }
+.kf-feat-name {
+  font-size: var(--fs-body); font-weight: 600; color: rgba(255,255,255,0.6);
+}
+.kf-feat-name-top {
+  font-size: var(--fs-subtitle); font-weight: 700; color: #fff;
+}
+.kf-feat-score {
+  font-size: var(--fs-body); font-weight: 800; color: rgba(255,255,255,0.3);
+  font-family: monospace;
+}
+.kf-feat-score-top {
+  font-size: var(--fs-stat-lg); color: #c084fc;
+}
+
+.kf-feat-bar-track {
+  height: 4px; border-radius: 2px;
+  background: rgba(255,255,255,0.06);
+  margin-top: 0.5rem; overflow: hidden;
+}
+.kf-feat-top .kf-feat-bar-track {
+  height: 6px; border-radius: 3px;
+  margin-top: 0.75rem;
+}
+.kf-feat-bar-fill {
+  height: 100%; border-radius: inherit;
+  background: rgba(255,255,255,0.15);
+}
+.kf-bar-1 {
+  background: linear-gradient(90deg, #9046FF, #c084fc);
+}
+.kf-bar-2 {
+  background: linear-gradient(90deg, #7c5cfc, #a78bfa);
+}
+.kf-bar-3 {
+  background: linear-gradient(90deg, #6d28d9, #8b5cf6);
+}
+
+.kf-feat-desc {
+  font-size: var(--fs-caption); color: rgba(255,255,255,0.5); line-height: 1.6;
+  margin: 0.6rem 0 0 0;
 }
