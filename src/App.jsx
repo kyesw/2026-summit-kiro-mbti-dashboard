@@ -12,10 +12,10 @@ export default function App() {
       <Routes>
         <Route path="/" element={<Navigate to="/1" replace />} />
         <Route path="/1" element={<HeroView />} />
-        <Route path="/2" element={<MBTIBattleView />} />
+        <Route path="/2" element={<KiroFeatureView />} />
+        <Route path="/2-backup" element={<MBTIBattleView />} />
         <Route path="/3" element={<SurveyView1 />} />
         <Route path="/4" element={<SurveyView2 />} />
-        <Route path="/5" element={<KiroFeatureView />} />
       </Routes>
     </BrowserRouter>
   );
