@@ -100,7 +100,7 @@ function useKiroTricks(controls) {
     const interval = setInterval(() => {
       tricks[trickIdx.current % tricks.length]();
       trickIdx.current++;
-    }, 5000);
+    }, 20000);
 
     return () => clearInterval(interval);
   }, [controls]);

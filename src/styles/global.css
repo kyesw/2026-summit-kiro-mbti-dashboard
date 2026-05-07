@@ -16,16 +16,16 @@
 
   /* Type scale */
   --fs-hero: 6rem;
-  --fs-display: 2.5rem;
-  --fs-title: 1.4rem;
-  --fs-subtitle: 1.15rem;
-  --fs-body: 1rem;
-  --fs-caption: 0.85rem;
-  --fs-micro: 0.7rem;
-  --fs-stat-xl: 3rem;
-  --fs-stat-lg: 2rem;
-  --fs-stat: 1.2rem;
-  --fs-stat-sm: 1rem;
+  --fs-display: 2.8rem;
+  --fs-title: 1.7rem;
+  --fs-subtitle: 1.4rem;
+  --fs-body: 1.2rem;
+  --fs-caption: 1rem;
+  --fs-micro: 0.85rem;
+  --fs-stat-xl: 3.5rem;
+  --fs-stat-lg: 2.4rem;
+  --fs-stat: 1.5rem;
+  --fs-stat-sm: 1.2rem;
 }
 
 html, body, #root { height: 100%; overflow: hidden; }
@@ -97,7 +97,7 @@ body {
 }
 .hero-kiro-icon {
   position: relative;
-  height: 24rem; width: 24rem; flex-shrink: 0;
+  height: 20rem; width: 20rem; flex-shrink: 0;
   filter:
     drop-shadow(0 0 8px rgba(144, 70, 255, 0.9))
     drop-shadow(0 0 24px rgba(144, 70, 255, 0.5))
@@ -266,23 +266,24 @@ body {
 /* Kiro Features Panel */
 .kiro-panel {
   flex: 1; display: flex; flex-direction: column;
-  padding: 2rem 1.5rem; overflow: hidden;
+  padding: 2rem 1.5rem; overflow: visible;
 }
 .kiro-panel-center {
   flex: 1; display: flex; flex-direction: column;
-  align-items: center;
-  overflow-y: auto; min-height: 0;
+  align-items: center; justify-content: center;
+  overflow: hidden; min-height: 0;
   scrollbar-width: none;
 }
 .kiro-panel-center::-webkit-scrollbar { display: none; }
 .kiro-panel-title {
-  font-size: var(--fs-title); font-weight: 700; color: #c084fc;
-  letter-spacing: .04em; margin: 0 0 1.5rem 0;
+  font-size: var(--fs-title); font-weight: 800; color: var(--text);
+  letter-spacing: .15em; text-transform: uppercase;
+  margin: 0 0 1.5rem 0;
   text-align: center; flex-shrink: 0;
 }
 .kiro-panel-content {
   display: flex; flex-direction: column;
-  gap: 2rem; width: 100%; max-width: 28rem;
+  gap: 1.5rem; width: 100%; max-width: 28rem;
 }
 
 .kiro-panel-hero {
@@ -290,17 +291,17 @@ body {
   text-align: center; position: relative;
 }
 .kiro-panel-char-glow {
-  position: absolute; width: 16rem; height: 16rem;
-  border-radius: 50%; top: -2rem;
-  pointer-events: none; filter: blur(48px); opacity: 0.5;
+  position: absolute; width: 14rem; height: 14rem;
+  border-radius: 50%; top: -1.5rem;
+  pointer-events: none; filter: blur(44px); opacity: 0.5;
 }
 .kiro-panel-char {
-  position: relative; width: 12rem; height: 12rem; object-fit: contain;
+  position: relative; width: 10rem; height: 10rem; object-fit: contain;
   filter:
     drop-shadow(0 0 6px rgba(124, 92, 252, 0.9))
     drop-shadow(0 0 20px rgba(124, 92, 252, 0.6))
     drop-shadow(0 0 50px rgba(124, 92, 252, 0.35));
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.4rem;
 }
 .kiro-panel-type {
   font-size: var(--fs-display); font-weight: 900; font-family: monospace;
@@ -318,8 +319,8 @@ body {
 
 .kiro-panel-section { display: flex; flex-direction: column; gap: 0.75rem; }
 .kiro-panel-section-label {
-  font-size: var(--fs-body); font-weight: 700; color: #9046FF;
-  text-transform: uppercase; letter-spacing: .08em;
+  font-size: var(--fs-caption); font-weight: 700; color: rgba(255,255,255,0.5);
+  text-transform: uppercase; letter-spacing: .1em;
 }
 
 .kiro-panel-strengths { display: flex; flex-wrap: wrap; gap: 0.5rem; }
@@ -341,10 +342,10 @@ body {
   display: flex; align-items: center; gap: 0.75rem;
 }
 .kiro-panel-feat-rank {
-  font-size: 0.75rem; font-family: monospace; font-weight: 700;
+  font-size: var(--fs-micro); font-family: monospace; font-weight: 700;
   color: rgba(144, 70, 255, 0.6);
 }
-.kiro-panel-feat-emoji { font-size: 1.25rem; }
+.kiro-panel-feat-emoji { font-size: var(--fs-subtitle); }
 .kiro-panel-feat-name {
   font-size: var(--fs-body); font-weight: 700; color: #fff; flex: 1;
 }
@@ -373,14 +374,14 @@ body {
 .kiro-panel-match-head {
   display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.4rem;
 }
-.kiro-panel-match-emoji { font-size: 1.875rem; }
+.kiro-panel-match-emoji { font-size: 2.5rem; }
 .kiro-panel-match-type {
-  font-size: var(--fs-subtitle); font-weight: 900; font-family: monospace;
+  font-size: var(--fs-title); font-weight: 900; font-family: monospace;
   color: #9046FF; display: block; line-height: 1;
 }
 .kiro-panel-match.challenge .kiro-panel-match-type { color: #c084fc; }
 .kiro-panel-match-name {
-  font-size: var(--fs-caption); color: rgba(255,255,255,0.6); display: block;
+  font-size: var(--fs-body); color: rgba(255,255,255,0.6); display: block;
 }
 .kiro-panel-match-comment {
   font-size: var(--fs-caption); color: rgba(255,255,255,0.5); line-height: 1.5; margin: 0;
@@ -420,6 +421,10 @@ body {
 .q3-question {
   font-size: var(--fs-display); font-weight: 700; color: var(--text);
   margin: 0;
+}
+.q3-half-count {
+  font-size: var(--fs-title); font-weight: 800; color: #fff;
+  font-family: monospace;
 }
 
 /* Split halves */
@@ -575,17 +580,16 @@ body {
 
 /* Stat cards (AI에 기대하는 것) */
 .sv2-statcards-wrap {
-  flex: 1; display: flex; flex-direction: column;
-  justify-content: center; gap: 0.6rem; min-height: 0;
-  width: 60%; align-self: center;
+  display: flex; flex-direction: column;
+  gap: 1.5rem; width: 100%;
 }
 .sv2-statcard {
-  display: flex; align-items: center; gap: 1rem;
-  padding: 0.75rem 1.25rem; border-radius: 12px; border: 1px solid;
+  display: flex; align-items: center; gap: 1.2rem;
+  height: 5rem; padding: 0 2rem; border-radius: 14px; border: 1px solid;
   position: relative; overflow: hidden;
 }
 .sv2-statcard-top {
-  padding: 1rem 1.25rem;
+  height: 5rem;
 }
 .sv2-statcard-rank {
   font-size: var(--fs-micro); font-weight: 800; font-family: monospace;
@@ -612,6 +616,38 @@ body {
   border-radius: 0 2px 2px 0;
 }
 
+/* ── SurveyView2 rolling layout ── */
+.sv2-rolling {
+  flex: 1; display: flex; flex-direction: column;
+  align-items: center;
+  position: relative; z-index: 1;
+  padding: 2rem 3rem;
+}
+.sv2-rolling-header {
+  text-align: center; padding-top: 4rem; flex-shrink: 0;
+}
+.sv2-rolling-title {
+  font-size: var(--fs-display); font-weight: 800; color: var(--text);
+  letter-spacing: .02em;
+}
+.sv2-floating-kiro {
+  position: absolute; z-index: 0;
+  opacity: 0.2; pointer-events: none;
+}
+.sv2-floating-kiro-img {
+  width: 100%; height: 100%; object-fit: contain;
+  position: relative; z-index: 1;
+}
+.sv2-floating-kiro-glow {
+  position: absolute; inset: -60%; border-radius: 50%;
+  background: radial-gradient(circle, rgba(124, 92, 252, 1) 0%, rgba(124, 92, 252, 0.5) 35%, transparent 65%);
+  filter: blur(35px);
+}
+.sv2-rolling-content {
+  width: 60vw;
+  margin-top: 4rem;
+}
+
 /* ── Kiro Feature View (Page 5) ── */
 .kf-view {
   height: 100vh; width: 100vw; overflow: hidden; position: relative;
@@ -635,6 +671,13 @@ body {
   display: flex; align-items: center; justify-content: center;
   padding: 1.5rem 2rem; flex-shrink: 0;
 }
+.kf-rank-subtitle-wrap {
+  text-align: center; padding: 0.5rem 2rem; flex-shrink: 0;
+}
+.kf-rank-subtitle {
+  font-size: var(--fs-title); font-weight: 700;
+  letter-spacing: 0.03em;
+}
 .kf-ranks {
   flex: 1; display: flex; flex-direction: column;
   justify-content: center; gap: 0;
@@ -642,43 +685,33 @@ body {
   min-height: 0;
 }
 .kf-rank-row {
-  display: flex; align-items: center; gap: 0.6rem;
-  padding: 0.3rem 0;
+  display: flex; align-items: center; gap: 0.8rem;
+  padding: 0.5rem 0;
 }
 .kf-rank-top {
-  padding: 0.45rem 0;
+  padding: 0.7rem 0;
 }
 .kf-rank-medal {
-  font-size: 1.1rem; min-width: 2.2rem; text-align: center;
+  font-size: var(--fs-subtitle); min-width: 2.5rem; text-align: center;
   flex-shrink: 0;
 }
 .kf-rank-top .kf-rank-medal {
-  font-size: 1.4rem;
-}
-.kf-rank-char {
-  width: 2.8rem; height: 2.8rem; object-fit: contain; flex-shrink: 0;
-  filter:
-    drop-shadow(0 0 4px rgba(124, 92, 252, 0.6))
-    drop-shadow(0 0 12px rgba(124, 92, 252, 0.3));
-}
-.kf-rank-char-sm {
-  width: 2rem; height: 2rem;
-  filter: drop-shadow(0 0 4px rgba(124, 92, 252, 0.3));
+  font-size: var(--fs-title);
 }
 .kf-rank-type {
-  font-size: var(--fs-subtitle); font-weight: 900; font-family: monospace;
+  font-size: var(--fs-title); font-weight: 900; font-family: monospace;
   letter-spacing: .06em; line-height: 1; color: #fff;
-  min-width: 4rem; flex-shrink: 0;
+  min-width: 4.5rem; flex-shrink: 0;
 }
 .kf-rank-type-sm {
-  font-size: var(--fs-caption); color: rgba(255,255,255,0.6);
+  font-size: var(--fs-subtitle); color: rgba(255,255,255,0.7);
 }
 .kf-rank-bar-track {
-  flex: 1; height: 10px; border-radius: 5px;
+  flex: 1; height: 14px; border-radius: 7px;
   background: rgba(255,255,255,0.06); overflow: hidden;
 }
 .kf-rank-top .kf-rank-bar-track {
-  height: 14px; border-radius: 7px;
+  height: 18px; border-radius: 9px;
 }
 .kf-rank-bar-stacked {
   height: 100%; border-radius: inherit;
@@ -710,26 +743,32 @@ body {
 .kf-rank-legend-label {
   font-size: var(--fs-micro); color: rgba(255,255,255,0.5); font-weight: 600;
 }
+.kf-rank-legend-active .kf-rank-legend-label {
+  color: #fff;
+}
+.kf-rank-legend-active .kf-rank-legend-dot {
+  box-shadow: 0 0 6px currentColor;
+}
 .kf-rank-count {
-  font-size: var(--fs-subtitle); font-weight: 900; min-width: 2.5rem;
+  font-size: var(--fs-title); font-weight: 900; min-width: 3rem;
   text-align: right; font-family: monospace;
 }
 .kf-rank-count-sm {
-  font-size: var(--fs-caption); color: rgba(255,255,255,0.5);
+  font-size: var(--fs-subtitle); color: rgba(255,255,255,0.6);
 }
 
 /* Right — Kiro features */
 .kf-right {
   flex: 4; display: flex; flex-direction: column;
-  min-height: 0; min-width: 0;
+  min-height: 0; min-width: 0; overflow: hidden;
 }
 .kf-panel {
   flex: 1; display: flex; flex-direction: column;
   padding: 2rem 1.5rem; overflow: hidden;
 }
 .kf-panel-title {
-  font-size: var(--fs-title); font-weight: 700; color: #c084fc;
-  letter-spacing: .04em; margin: 0 0 0.4rem 0;
+  font-size: var(--fs-title); font-weight: 800; color: var(--text);
+  letter-spacing: .15em; text-transform: uppercase; margin: 0 0 0.4rem 0;
   text-align: center; flex-shrink: 0;
 }
 .kf-panel-subtitle {

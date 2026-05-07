@@ -5,10 +5,10 @@ const QUESTIONS_BY_ROLE_KEY = 'mbti_expo_questions_by_role';
 const MBTI_BY_ROLE_KEY = 'mbti_expo_mbti_by_role';
 
 const sampleDistribution = {
-  ISTJ: randBetween(3, 50), ISFJ: randBetween(3, 50), INFJ: randBetween(3, 50), INTJ: randBetween(3, 50),
-  ISTP: randBetween(3, 50), ISFP: randBetween(3, 50), INFP: randBetween(3, 50), INTP: randBetween(3, 50),
-  ESTP: randBetween(3, 50), ESFP: randBetween(3, 50), ENFP: randBetween(3, 50), ENTP: randBetween(3, 50),
-  ESTJ: randBetween(3, 50), ESFJ: randBetween(3, 50), ENFJ: randBetween(3, 50), ENTJ: randBetween(3, 50),
+  ISTJ: randBetween(40, 90), ISFJ: randBetween(40, 90), INFJ: randBetween(40, 90), INTJ: randBetween(40, 90),
+  ISTP: randBetween(40, 90), ISFP: randBetween(40, 90), INFP: randBetween(40, 90), INTP: randBetween(40, 90),
+  ESTP: randBetween(40, 90), ESFP: randBetween(40, 90), ENFP: randBetween(40, 90), ENTP: randBetween(40, 90),
+  ESTJ: randBetween(40, 90), ESFJ: randBetween(40, 90), ENFJ: randBetween(40, 90), ENTJ: randBetween(40, 90),
 };
 
 function randBetween(min, max) {

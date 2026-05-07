@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { getQuestionResults, getQuestionResultsByRole, simulateQuestionResults, ROLES } from '../data/dataService';
+import { getQuestionResults, simulateQuestionResults } from '../data/dataService';
 import { mbtiQuestions, getAxisColors } from '../data/mbtiQuestions';
 import NightSky from '../components/NightSky';
 import kiroGhost from '../assets/kiro-ghost.svg';
@@ -8,18 +8,16 @@ import kiroGhost from '../assets/kiro-ghost.svg';
 
 export default function SurveyView1() {
   const [data, setData] = useState(getQuestionResults());
-  const [roleData, setRoleData] = useState(getQuestionResultsByRole());
   const [idx, setIdx] = useState(0);
 
   useEffect(() => {
-    const timer = setInterval(() => setIdx(i => (i + 1) % mbtiQuestions.length), 5000);
+    const timer = setInterval(() => setIdx(i => (i + 1) % mbtiQuestions.length), 10000);
     return () => clearInterval(timer);
   }, []);
 
   useEffect(() => {
     const update = () => {
       setData(getQuestionResults());
-      setRoleData(getQuestionResultsByRole());
     };
     window.addEventListener('mbti-update', update);
     window.addEventListener('storage', update);
@@ -41,15 +39,6 @@ export default function SurveyView1() {
   const [colorA, colorB] = getAxisColors(q.axis);
   const winA = pctA >= pctB;
 
-  const qRoles = roleData[q.id] || {};
-  const roleSplits = ROLES.map(role => {
-    const rd = qRoles[role] || { a: 0, b: 0 };
-    const t = rd.a + rd.b;
-    const ratioA = t > 0 ? rd.a / t : 0.5;
-    return { role, ratioA, pctA: Math.round(ratioA * 100) };
-  });
-  const rolesA = roleSplits.filter(r => r.ratioA >= 0.5).sort((a, b) => b.ratioA - a.ratioA);
-  const rolesB = roleSplits.filter(r => r.ratioA < 0.5).sort((a, b) => a.ratioA - b.ratioA);
 
   return (
     <div className="q3-view">
@@ -92,20 +81,10 @@ export default function SurveyView1() {
               >
                 {pctA}%
               </motion.span>
-              <p className="q3-half-text" style={{ opacity: winA ? 0.8 : 0.4 }}>
+              <p className="q3-half-text" style={{ opacity: winA ? 0.9 : 0.4 }}>
                 {q.choices[0].short || q.choices[0].text}
               </p>
-              {rolesA.length > 0 && (
-                <div className="q3-half-roles">
-                  {rolesA.map((r, i) => (
-                    <span
-                      key={r.role}
-                      className="q3-half-role"
-                      style={{ borderColor: `${colorA}${i === 0 ? '40' : '20'}`, color: `${colorA}cc`, opacity: i === 0 ? 1 : 0.6 }}
-                    >{r.role}</span>
-                  ))}
-                </div>
-              )}
+              <span className="q3-half-count" style={{ opacity: winA ? 0.9 : 0.4 }}>{d.a}명</span>
             </motion.div>
 
             <div className="q3-divider">
@@ -132,20 +111,10 @@ export default function SurveyView1() {
               >
                 {pctB}%
               </motion.span>
-              <p className="q3-half-text" style={{ opacity: !winA ? 0.8 : 0.4 }}>
+              <p className="q3-half-text" style={{ opacity: !winA ? 0.9 : 0.4 }}>
                 {q.choices[1].short || q.choices[1].text}
               </p>
-              {rolesB.length > 0 && (
-                <div className="q3-half-roles">
-                  {rolesB.map((r, i) => (
-                    <span
-                      key={r.role}
-                      className="q3-half-role"
-                      style={{ borderColor: `${colorB}${i === 0 ? '40' : '20'}`, color: `${colorB}cc`, opacity: i === 0 ? 1 : 0.6 }}
-                    >{r.role}</span>
-                  ))}
-                </div>
-              )}
+              <span className="q3-half-count" style={{ opacity: !winA ? 0.9 : 0.4 }}>{d.b}명</span>
             </motion.div>
           </div>
 
