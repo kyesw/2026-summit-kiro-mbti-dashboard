@@ -10,7 +10,7 @@ import {
 } from './sampleData';
 
 // ── Toggle: set to true to fetch from API, false for localStorage demo ──
-export const USE_API = false;
+export const USE_API = true;
 
 const API_URL = 'https://fhtmrdwnvk.execute-api.ap-northeast-2.amazonaws.com/api/stats';
 const POLL_INTERVAL = 5000;
@@ -61,18 +61,45 @@ export function getTotalCount() {
   return localGetResults().length;
 }
 
+const STYLE_ALIAS = {
+  autonomous: '알아서 처리',
+  interactive: '자료 검색/요약',
+  manual: '아직 안 써봤다',
+};
+
 export function getSurveyResults() {
-  if (USE_API) return _cache?.survey || {};
+  if (USE_API) {
+    const survey = _cache?.survey || {};
+    if (survey.ai_style) {
+      const fixed = {};
+      for (const [k, v] of Object.entries(survey.ai_style)) {
+        const mapped = STYLE_ALIAS[k] || k;
+        fixed[mapped] = (fixed[mapped] || 0) + v;
+      }
+      return { ...survey, ai_style: fixed };
+    }
+    return survey;
+  }
   return localGetSurveyResults();
 }
 
 export function getQuestionResults() {
-  if (USE_API) return _cache?.questions || {};
+  if (USE_API) {
+    const raw = _cache?.questions || {};
+    const result = {};
+    for (const [k, v] of Object.entries(raw)) result[Number(k)] = v;
+    return result;
+  }
   return localGetQuestionResults();
 }
 
 export function getQuestionResultsByRole() {
-  if (USE_API) return _cache?.questions_by_role || {};
+  if (USE_API) {
+    const raw = _cache?.questions_by_role || {};
+    const result = {};
+    for (const [k, v] of Object.entries(raw)) result[Number(k)] = v;
+    return result;
+  }
   return localGetQuestionResultsByRole();
 }
 
