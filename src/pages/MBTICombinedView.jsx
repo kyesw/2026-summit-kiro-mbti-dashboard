@@ -42,9 +42,6 @@ function MbtiRanking({ counts, mbtiByRole }) {
 
   return (
     <div className="kf-left">
-      <div className="kf-left-header">
-        <h1 className="mbubble-section-title">MBTI 순위</h1>
-      </div>
       <div className="kf-rank-subtitle-wrap">
         <AnimatePresence mode="wait">
           <motion.p
@@ -124,7 +121,6 @@ function KiroFeaturesPanel() {
 
   return (
     <div className="kiro-panel">
-      <h2 className="kiro-panel-title">MBTI별 추천 Kiro 기능</h2>
       <div className="kiro-panel-center">
 
         <AnimatePresence mode="wait">
@@ -149,12 +145,12 @@ function KiroFeaturesPanel() {
               <div className="kiro-panel-features">
                 {top3.map((feat, i) => (
                   <div key={feat.id} className="kiro-panel-feat">
-                    <div className="kiro-panel-feat-head">
-                      <span className="kiro-panel-feat-rank">#{i + 1}</span>
-                      <span className="kiro-panel-feat-emoji">{feat.emoji}</span>
+                    <span className="kiro-panel-feat-rank">#{i + 1}</span>
+                    <img src={feat.icon} alt={feat.name} className="kiro-panel-feat-icon" />
+                    <div className="kiro-panel-feat-text">
                       <span className="kiro-panel-feat-name">{feat.name}</span>
+                      <p className="kiro-panel-feat-desc">{feat.short}</p>
                     </div>
-                    <p className="kiro-panel-feat-desc">{feat.description}</p>
                   </div>
                 ))}
               </div>
@@ -166,7 +162,7 @@ function KiroFeaturesPanel() {
                 <div className="kiro-panel-match good">
                   <div className="kiro-panel-match-badge">잘 맞는 조합</div>
                   <div className="kiro-panel-match-head">
-                    <span className="kiro-panel-match-emoji">{bestMatch?.emoji}</span>
+                    <img src={`/kiro_characters/${result.bestMatch}.png`} alt={result.bestMatch} className="kiro-panel-match-icon" />
                     <div>
                       <span className="kiro-panel-match-type">{result.bestMatch}</span>
                       <span className="kiro-panel-match-name">{bestMatch?.title}</span>
@@ -176,7 +172,7 @@ function KiroFeaturesPanel() {
                 <div className="kiro-panel-match challenge">
                   <div className="kiro-panel-match-badge">안 맞는 조합</div>
                   <div className="kiro-panel-match-head">
-                    <span className="kiro-panel-match-emoji">{challengeMatch?.emoji}</span>
+                    <img src={`/kiro_characters/${result.challengeMatch}.png`} alt={result.challengeMatch} className="kiro-panel-match-icon" />
                     <div>
                       <span className="kiro-panel-match-type">{result.challengeMatch}</span>
                       <span className="kiro-panel-match-name">{challengeMatch?.title}</span>
@@ -225,6 +221,15 @@ export default function MBTICombinedView() {
   return (
     <div className="kf-view">
       <NightSky />
+
+      <div className="kf-title-bar">
+        <div className="kf-title-cell">
+          <h1 className="kf-page-title">MBTI 순위</h1>
+        </div>
+        <div className="kf-title-cell">
+          <h1 className="kf-page-title">MBTI별 추천 Kiro 기능</h1>
+        </div>
+      </div>
 
       <div className="kf-body">
         <MbtiRanking counts={counts} mbtiByRole={mbtiByRole} />

@@ -68,12 +68,12 @@ export function clearResults() {
 
 // Kiro features matched to MBTI types
 export const kiroFeatures = {
-  steering: { id: 'steering', emoji: '📏', name: 'Steering', description: '프로젝트의 기술 스택, 코딩 컨벤션, 아키텍처 규칙을 마크다운 파일로 정의하면, AI가 모든 대화에서 자동으로 따릅니다.' },
-  powers:   { id: 'powers',   emoji: '⚡', name: 'Powers',   description: 'Stripe, Supabase, Figma 등 외부 도구를 MCP 프로토콜로 연결하고, 필요한 순간에만 동적으로 로딩합니다.' },
-  agent:    { id: 'agent',    emoji: '🤖', name: 'Autonomous Agent', description: '복잡한 작업을 격리된 샌드박스에서 비동기로 실행하고, 완료되면 PR까지 자동 생성합니다.' },
-  specs:    { id: 'specs',    emoji: '📐', name: 'Specs',     description: '자연어 한 줄이 요구사항 → 기술 설계 → 실행 가능한 태스크로 자동 분해됩니다.' },
-  vibe:     { id: 'vibe',     emoji: '🎨', name: 'Vibe Coding', description: '아이디어가 떠오르면 자연어로 대화하듯 코드를 만들어보세요. 빠르게 프로토타이핑할 수 있습니다.' },
-  hooks:    { id: 'hooks',    emoji: '🔄', name: 'Hooks',     description: '파일 저장, 태스크 완료 등 IDE 이벤트에 자동으로 반응하여 테스트 생성, 보안 스캔, 문서 업데이트를 실행합니다.' },
+  steering: { id: 'steering', emoji: '📏', icon: '/kiro_functions/hero-img-15.png', name: 'Steering', short: 'AI가 따르는 프로젝트 규칙 설정', description: '프로젝트의 기술 스택, 코딩 컨벤션, 아키텍처 규칙을 마크다운 파일로 정의하면, AI가 모든 대화에서 자동으로 따릅니다.' },
+  powers:   { id: 'powers',   emoji: '⚡', icon: '/kiro_functions/hero-img-2.png', name: 'Powers',   short: '외부 도구와 AI 연결', description: 'Stripe, Supabase, Figma 등 외부 도구를 MCP 프로토콜로 연결하고, 필요한 순간에만 동적으로 로딩합니다.' },
+  agent:    { id: 'agent',    emoji: '🤖', icon: '/kiro_functions/hero-img-4.png', name: 'Autonomous Agent', short: '자율 실행 AI 에이전트', description: '복잡한 작업을 격리된 샌드박스에서 비동기로 실행하고, 완료되면 PR까지 자동 생성합니다.' },
+  specs:    { id: 'specs',    emoji: '📐', icon: '/kiro_functions/hero-img-9.png', name: 'Specs',     short: '자연어 → 설계 → 태스크 자동 분해', description: '자연어 한 줄이 요구사항 → 기술 설계 → 실행 가능한 태스크로 자동 분해됩니다.' },
+  vibe:     { id: 'vibe',     emoji: '🎨', icon: '/kiro_functions/hero-img-3.png', name: 'Vibe Coding', short: '대화로 빠른 프로토타이핑', description: '아이디어가 떠오르면 자연어로 대화하듯 코드를 만들어보세요. 빠르게 프로토타이핑할 수 있습니다.' },
+  hooks:    { id: 'hooks',    emoji: '🔄', icon: '/kiro_functions/hero-img-1.png', name: 'Hooks',     short: '이벤트 기반 자동화 트리거', description: '파일 저장, 태스크 완료 등 IDE 이벤트에 자동으로 반응하여 테스트 생성, 보안 스캔, 문서 업데이트를 실행합니다.' },
 };
 
 const mbtiWeights = {

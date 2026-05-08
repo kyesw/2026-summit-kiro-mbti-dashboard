@@ -12,8 +12,6 @@ const FLOATING_KIROS = [
   { size: 100, delay: 0, duration: 35, x: ['5vw', '80vw', '30vw', '70vw', '5vw'], y: ['10vh', '60vh', '80vh', '20vh', '10vh'] },
   { size: 90, delay: 2, duration: 40, x: ['85vw', '20vw', '60vw', '10vw', '85vw'], y: ['70vh', '15vh', '50vh', '80vh', '70vh'] },
   { size: 110, delay: 4, duration: 38, x: ['50vw', '5vw', '75vw', '40vw', '50vw'], y: ['5vh', '45vh', '75vh', '30vh', '5vh'] },
-  { size: 80, delay: 1, duration: 45, x: ['10vw', '60vw', '90vw', '35vw', '10vw'], y: ['80vh', '30vh', '10vh', '60vh', '80vh'] },
-  { size: 95, delay: 3, duration: 36, x: ['75vw', '40vw', '10vw', '65vw', '75vw'], y: ['40vh', '85vh', '20vh', '55vh', '40vh'] },
 ];
 
 function useRanked(data, question) {

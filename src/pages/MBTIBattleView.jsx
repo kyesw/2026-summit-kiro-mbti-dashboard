@@ -230,12 +230,12 @@ function KiroFeaturesPanel({ onTypeChange }) {
               <div className="kiro-panel-features">
                 {top3.map((feat, i) => (
                   <div key={feat.id} className="kiro-panel-feat">
-                    <div className="kiro-panel-feat-head">
-                      <span className="kiro-panel-feat-rank">#{i + 1}</span>
-                      <span className="kiro-panel-feat-emoji">{feat.emoji}</span>
+                    <span className="kiro-panel-feat-rank">#{i + 1}</span>
+                    <img src={feat.icon} alt={feat.name} className="kiro-panel-feat-icon" />
+                    <div className="kiro-panel-feat-text">
                       <span className="kiro-panel-feat-name">{feat.name}</span>
+                      <p className="kiro-panel-feat-desc">{feat.description}</p>
                     </div>
-                    <p className="kiro-panel-feat-desc">{feat.description}</p>
                   </div>
                 ))}
               </div>
@@ -248,7 +248,7 @@ function KiroFeaturesPanel({ onTypeChange }) {
                 <div className="kiro-panel-match good">
                   <div className="kiro-panel-match-badge">잘 맞는 조합</div>
                   <div className="kiro-panel-match-head">
-                    <span className="kiro-panel-match-emoji">{bestMatch?.emoji}</span>
+                    <img src={`/kiro_characters/${result.bestMatch}.png`} alt={result.bestMatch} className="kiro-panel-match-icon" />
                     <div>
                       <span className="kiro-panel-match-type">{result.bestMatch}</span>
                       <span className="kiro-panel-match-name">{bestMatch?.title}</span>
@@ -259,7 +259,7 @@ function KiroFeaturesPanel({ onTypeChange }) {
                 <div className="kiro-panel-match challenge">
                   <div className="kiro-panel-match-badge">안 맞는 조합</div>
                   <div className="kiro-panel-match-head">
-                    <span className="kiro-panel-match-emoji">{challengeMatch?.emoji}</span>
+                    <img src={`/kiro_characters/${result.challengeMatch}.png`} alt={result.challengeMatch} className="kiro-panel-match-icon" />
                     <div>
                       <span className="kiro-panel-match-type">{result.challengeMatch}</span>
                       <span className="kiro-panel-match-name">{challengeMatch?.title}</span>
